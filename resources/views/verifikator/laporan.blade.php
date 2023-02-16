@@ -1,4 +1,4 @@
-@extends('layouts.main-verifikator')
+@extends('layouts.main')
 
 @section('title', 'Laporan')
     
@@ -18,40 +18,34 @@
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-lg-3 mb-2">
-          <input type="text" id="dateFrom" class="form-control" placeholder="Dari tanggal">
-        </div><!-- col -->
-        <div class="col-lg-3 mb-2">
-          <input type="text" id="dateTo" class="form-control" placeholder="Sampai tanggal">
-        </div><!-- col -->
-        <div class="col-lg-3">
-            <button class="btn btn-primary mb-2" type="submit"><i data-feather="filter"></i> Filter</button>
-            <button class="btn btn-primary mb-2" type="submit"><i data-feather="printer"></i> Cetak</button>
+    <div class="row mb-2">
+        <div class="col-sm-3 mb-3">
+            <input type="text" id="dateFrom" class="form-control" placeholder="Dari tanggal">
         </div>
-    </div><!-- row -->
+        <div class="col-sm-3 mb-3">
+            <input type="text" id="dateTo" class="form-control" placeholder="Sampai tanggal">
+        </div>
+        <div class="col-sm mb-2">
+            <button class="btn btn-primary mb-2" type="submit"><i data-feather="filter"></i> Filter</button>
+            <button class="btn btn-success mb-2" type="submit"><i data-feather="printer"></i> Cetak</button> 
+        </div>
+    </div>
 
     <table id="example1" class="table">
         <thead>
           <tr>
-            <th class="wd-20p">Name</th>
-            <th class="wd-25p">Position</th>
-            <th class="wd-20p">Office</th>
-            <th class="wd-15p">Age</th>
+            <th class="wd-10p">Tanggal</th>
+            <th class="wd-15p">Nama</th>
+            <th class="wd-25p">Aktifitas</th>
+            <th class="wd-5p">Status</th>
           </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Cara Stevens</td>
-                <td>Sales Assistant</td>
-                <td>New York</td>
-                <td>46</td>
-            </tr>
-            <tr>
-                <td>Hermione Butler</td>
-                <td>Regional Director</td>
-                <td>London</td>
-                <td>47</td>
+                <td>12 Januari 2023</td>
+                <td>Oktaviani Rianti</td>
+                <td>Melaksanakan Pembelajaran</td>
+                <td>Verified</td>
             </tr>
         </tbody>
     </table>

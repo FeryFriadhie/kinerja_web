@@ -32,7 +32,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ url('') }}/assets/img/favicon.png">
 
-    <title>@yield('title')</title>
+    <title>@yield('title') | e-Kinerja SMKN 1 Ciamis</title>
 
     <!-- vendor css -->
     <link href="{{ url('') }}/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -42,11 +42,20 @@
     <link href="{{ url('') }}/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">
     <link href="{{ url('') }}/lib/select2/css/select2.min.css" rel="stylesheet">
     <link href="{{ url('') }}/lib/prismjs/themes/prism-vs.css" rel="stylesheet">
-
+    <link href="{{ url('') }}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
     <!-- DashForge CSS -->
     <link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.css">
     <link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.dashboard.css">
 		<link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.demo.css">
+
+    <!--notify-->
+    {{-- @notifyCss --}}
+
+    <style>
+      .container{width: 80%}
+      td{vertical-align: top}
+    </style>
 
   </head>
   <body>

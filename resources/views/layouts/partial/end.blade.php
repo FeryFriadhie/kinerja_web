@@ -1,3 +1,7 @@
+    <!--notify-->
+    {{-- <x:notify-messages /> --}}
+    {{-- @notifyJs --}}
+
     <script src="{{ url('') }}/lib/jquery/jquery.min.js"></script>
     <script src="{{ url('') }}/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('') }}/lib/feather-icons/feather.min.js"></script>
@@ -8,6 +12,7 @@
     <script src="{{ url('') }}/lib/flot.curvedlines/curvedLines.js"></script>
     <script src="{{ url('') }}/lib/peity/jquery.peity.min.js"></script>
     <script src="{{ url('') }}/lib/chart.js/Chart.bundle.min.js"></script>
+    <script src="{{ url('') }}/lib/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="{{ url('') }}/assets/js/dashforge.js"></script>
     <script src="{{ url('') }}/assets/js/dashforge.aside.js"></script>
@@ -28,18 +33,10 @@
     <!-- append theme customizer -->
     <script src="{{ url('') }}/lib/js-cookie/js.cookie.js"></script>
     <script src="{{ url('') }}/assets/js/dashforge.settings.js"></script>
-
     <script src="{{ url('') }}/lib/prismjs/prism.js"></script>
-
     <script src="{{ url('') }}/assets/js/dashforge.js"></script>
-    <script>
-      $(function(){
-        'use strict'
 
-        $('[data-toggle="tooltip"]').tooltip();
-
-      })
-    </script>
+    <!-- datatable -->
     <script>
       $(function(){
         'use strict'
@@ -58,6 +55,146 @@
       });
     </script>
 
+    <!-- accordion -->
+    <script>
+      $(function(){
+        'use strict'
 
-  </body>
-</html>
+        // Default functionality
+        $('#accordion1').accordion({
+          heightStyle: 'content'
+        });
+
+      });
+    </script>
+
+    <!-- tooltips -->
+    <script>
+      $(function(){
+          $(document).ready(function() {
+          //initializing tooltip
+          $('[data-toggle="tooltip"]').tooltip();
+          });
+      });
+    </script>
+
+    <!-- select2 -->
+    <script>
+      // Adding placeholder for search input
+      (function($) {
+
+        'use strict'
+
+        var Defaults = $.fn.select2.amd.require('select2/defaults');
+
+        $.extend(Defaults.defaults, {
+          searchInputPlaceholder: ''
+        });
+
+          var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
+
+          var _renderSearchDropdown = SearchDropdown.prototype.render;
+
+          SearchDropdown.prototype.render = function(decorated) {
+
+          // invoke parent method
+          var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
+
+          this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
+
+          return $rendered;
+        };
+
+      })(window.jQuery);
+
+      // Do this before you initialize any of your modals
+      $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+
+      $(function(){
+        'use strict'
+        // Basic with search
+        $('.select2-input').select2({
+          placeholder: 'Pilih Satu',
+          searchInputPlaceholder: 'Cari Opsi',
+          tags: true,
+        });
+      });
+
+      $(function() {
+          'use strict'
+          $('.aktifitas_group').select2({
+          width: '100%',
+          dropdownParent: $('#edit_laporan'),
+          placeholder: 'Pilih Satu',
+          searchInputPlaceholder: 'Cari Opsi',
+          tags: true,
+        });
+      });
+
+      $(function(){
+        'use strict'
+        $('.aktifitas_usul').select2({
+          width: '100%',
+          dropdownParent: $("#edit_laporan"),
+          placeholder: 'Pilih Satu',
+          searchInputPlaceholder: 'Cari Opsi',
+          tags: true,
+        });
+      });
+
+    </script>
+
+    <!-- date picker -->
+    <script>
+      var dateFormat = 'mm/dd/yy',
+      from = $('#dateFrom')
+      .datepicker({
+        defaultDate: '+1w',
+        numberOfMonths: 2
+      })
+      .on('change', function() {
+        to.datepicker('option','minDate', getDate( this ) );
+      }),
+      to = $('#dateTo').datepicker({
+        defaultDate: '+1w',
+        numberOfMonths: 2
+      })
+      .on('change', function() {
+        from.datepicker('option','maxDate', getDate( this ) );
+      });
+
+      function getDate( element ) {
+        var date;
+        try {
+          date = $.datepicker.parseDate( dateFormat, element.value );
+        } catch( error ) {
+          date = null;
+        }
+
+        return date;
+      }
+    </script>
+
+    <script>
+      function showGroup(){
+        var selectBox = document.getElementById('aspek');
+        var userInput = selectBox.options[selectBox.selectIndex].value;
+
+        if (userInput == $aspek->id) {
+          document.getElementById('group').style.visibility = 'visible';
+        } else {
+          document.getElementById('group').style.visibility = 'hidden';
+        }
+      }
+    </script>
+
+
+    <!-- modal -->
+    {{-- <script>
+      var cleave = new Cleave('#inputBlocks', {
+        blocks: [8, 6, 1, 3],
+        uppercase: true
+      });
+    </script> --}}
+
+

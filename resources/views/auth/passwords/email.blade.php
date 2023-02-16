@@ -1,47 +1,23 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div class="content content-fixed content-auth-alt">
+    <div class="container d-flex justify-content-center ht-100p">
+        <div class="mx-wd-300 wd-sm-450 ht-100p d-flex flex-column align-items-center justify-content-center">
+            <div class="wd-80p wd-sm-300 mg-b-15"><img src="../../assets/img/forgot-pw.png" class="img-fluid" alt="" /></div>
+            <h4 class="tx-20 tx-sm-24">Atur ulang kata sandi Anda</h4>
+            <p class="tx-color-03 mg-b-30 tx-center">Masukkan alamat Email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.</p>
+            <div class="wd-100p d-flex flex-column flex-sm-row mg-b-40">
+                <input type="text" class="form-control wd-sm-250 flex-fill" placeholder="Masukan Email" />
+                <button class="btn btn-brand-02 mg-sm-l-10 mg-t-10 mg-sm-t-0">Atur Ulang Kata Sandi</button>
             </div>
+            <!-- <span class="tx-12 tx-color-03">Key business concept vector is created by <a href="https://www.freepik.com/free-photos-vectors/business">freepik (freepik.com)</a></span> -->
         </div>
     </div>
+    <!-- container -->
 </div>
+<!-- content -->
+</div>
+
 @endsection

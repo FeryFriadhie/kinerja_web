@@ -35,15 +35,15 @@
     <title>e-Kinerja | SMKN 1 Ciamis</title>
 
     <!-- vendor css -->
-    <link href="lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-    <link href="../lib/typicons.font/typicons.css" rel="stylesheet">
-    <link href="../lib/prismjs/themes/prism-vs.css" rel="stylesheet">
+    <link href="{{ url('') }}/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="{{ url('') }}/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="{{ url('') }}//lib/typicons.font/typicons.css" rel="stylesheet">
+    <link href="{{ url('') }}/lib/prismjs/themes/prism-vs.css" rel="stylesheet">
 
     <!-- DashForge CSS -->
-    <link rel="stylesheet" href="assets/css/dashforge.css">
-    <link rel="stylesheet" href="assets/css/dashforge.landing.css">
-		<link rel="stylesheet" href="../assets/css/dashforge.demo.css">
+    <link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.css">
+    <link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.landing.css">
+		<link rel="stylesheet" href="{{ url('') }}/assets/css/dashforge.demo.css">
 
     <!-- bootstrap -->
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -86,15 +86,15 @@
     @include('layouts.partial.footer')
     <!-- end footer -->
 
-    <script src="lib/jquery/jquery.min.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/feather-icons/feather.min.js"></script>
-    <script src="lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="{{ url('') }}/lib/jquery/jquery.min.js"></script>
+    <script src="{{ url('') }}/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url('') }}/lib/feather-icons/feather.min.js"></script>
+    <script src="{{ url('') }}/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
     
-    <script src="../lib/jqueryui/jquery-ui.min.js"></script>
-    <script src="../lib/prismjs/prism.js"></script>
-    <script src="assets/js/dashforge.js"></script>
+    <script src="{{ url('') }}/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="{{ url('') }}/lib/prismjs/prism.js"></script>
+    <script src="{{ url('') }}/assets/js/dashforge.js"></script>
     <script>
       $(document).ready(function() {
         'use strict'

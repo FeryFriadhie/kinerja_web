@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use auth;
+use App\Models\DataPegawai;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Symfony\Component\Mime\Part\DataPart;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -29,6 +34,8 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    // protected $user;
+
     /**
      * Create a new controller instance.
      *
@@ -36,19 +43,105 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+      $this->middleware('guest:admin')->except('logout');
+      $this->middleware('guest:pegawai')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $input = $request->all();
+
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        // if(is_numeric($input['email']))
+        // {
+        //   $input['email'] = DataPegawai::where('nik', $input['email'])->first()->email;
+        // } else {
+        //   $input['email'] = $input['email'];
+        // }
+
+        // dd($input['email']);
+
+        // mun kie bisaa login pegawai?
+        // kela diajran deui
+        // bisa, tpi login tina table user teu bisa aka admin
+
+        
+        
+        if(Auth::guard('admin')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
+        {
+          // dd(auth()->user());
+
+            if (auth()->user()->role == 'Administrator') 
+            {
+              return redirect()->route('admin.dashboard');
+            }
+            else if (auth()->user()->role == 'Validator') 
+            {
+              return redirect()->route('validator.dashboard');
+            }
+            else if (auth()->user()->role == 'Verifikator') 
+            {
+              return redirect()->route('verifikator.dashboard');
+            }
+            else if (auth()->user()->role == 'Member') 
+            {
+              return redirect()->route('member.dashboard');
+            }
+            else
+            {
+                return '404';
+            }
+        } 
+        elseif (Auth::guard('pegawai')->attempt(array('email' => $input['email'], 'password' => $input['password']))) 
+        {
+          
+          // dd(auth()->user());   
+
+            if (auth()->user()->role == 'Administrator') 
+            {
+              return redirect()->route('admin.dashboard');
+            }
+            else if (auth()->user()->role == 'Validator') 
+            {
+              return redirect()->route('validator.dashboard');
+            }
+            else if (auth()->user()->role == 'Verifikator') 
+            {
+              return redirect()->route('verifikator.dashboard');
+            }
+            else if (auth()->user()->role == 'Member') 
+            {
+              return redirect()->route('member.dashboard');
+            }
+            else
+            {
+                return '404';
+            }
+        } 
+        else
+        {
+            return redirect()
+            ->route('login')
+            ->with('error','Incorrect email or password!.');
+        }
+
+
     }
 
     // redirect sesudah berhasil login kemana
     // public function redirectTo()
     // {
-    //     if(auth->user()->role == 'admin'){
+    //     if(auth()->user()->role == 'admin'){
     //         return '/admin/dashboard';
-    //     } else if(auth->user()->role == 'validator'){
+    //     } else if(auth()->user()->role == 'validator'){
     //         return '/validator/dashboard';
-    //     } else if (auth->user()->role == 'verifikator') {
+    //     } else if (auth()->user()->role == 'verifikator') {
     //         return '/verifikator/dashboard';
-    //     } else if (auth->user()->role == 'member') {
+    //     } else if (auth()->user()->role == 'member') {
     //         return '/member/dashboard';
     //     } else {
     //         return '404';

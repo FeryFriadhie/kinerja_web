@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -14,6 +15,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        
     }
 
     /**
@@ -23,12 +25,46 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // nanti di if else dan return view na sesuai role
-        /*
-        if (auth()->role == 'admin'){
-            return view ('admin/dashboard);
-        } else if ()
-        */
-        return view('/admin/dashboard');
+        return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function userMember()
+    {
+        return view('member.dashboard');
+    }
+
+     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function userVerifikator()
+    {
+        return view('verifikator.dashboard');
+    }
+
+     /**1
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function userValidator()
+    {
+        return view('validator.dashboard');
+    }
+
+     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function userAdministrator()
+    {
+        return view('admin.dashboard');
     }
 }

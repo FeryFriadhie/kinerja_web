@@ -13,9 +13,14 @@ return [
     |
     */
 
+    // 'defaults' => [
+    //     'guard' => ['admin','pegawai'],
+    //     'passwords' => ['users','tabel_data_pegawai'],
+    // ],
+
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'pegawai',
+        'passwords' => 'tabel_data_pegawai',
     ],
 
     /*
@@ -36,9 +41,14 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'admin' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'pegawai' => [
+            'driver' => 'session',
+            'provider' => 'tabel_data_pegawai',
         ],
     ],
 
@@ -65,10 +75,11 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'tabel_data_pegawai' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\DataPegawai::class,
+            // 'table' => 'tabel_data_pegawai',
+        ],
     ],
 
     /*
@@ -89,6 +100,13 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        
+        'tabel_data_pegawai' => [
+            'provider' => 'tabel_data_pegawai',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

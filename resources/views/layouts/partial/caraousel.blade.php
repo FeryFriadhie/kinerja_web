@@ -1,4 +1,5 @@
-<div id="carouselExample4" class="carousel slide" data-ride="carousel">
+<div class="banner">
+  <div id="carouselExample4" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExample4" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExample4" data-slide-to="1"></li>
@@ -35,4 +36,5 @@
       <span class="carousel-control-next-icon" aria-hidden="true"><i data-feather="chevron-right"></i></span>
       <span class="sr-only">Next</span>
     </a>
+  </div>
 </div>
