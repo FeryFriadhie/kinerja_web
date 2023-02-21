@@ -18,7 +18,7 @@
         style = style + ".dataTables_info {display: none}";
         style = style + ".dataTables_paginate {display: none}";
         style = style + "#tbl_filter {display: none}";
-        style = style + "#example1_filter {display: none}";
+        style = style + "#lap_kinerja_filter {display: none}";
         style = style + ".title {text-align: center; margin: 0; padding: 0;}";
         style = style + ".title-1 {font-size: 16}";
         style = style + ".title-1 {font-size: 14}";
@@ -47,10 +47,10 @@
         win.document.write('<hr> <br>');
         win.document.write('<h3 class="title mb-2">LAPORAN KINERJA HARIAN P3K/NON ASN TENAGA PENDIDIK</h3> <br>');
         win.document.write('<p class="p-0 m-0">NAMA : {{auth()->user()->nama_pegawai}} </p>');
-        win.document.write('<p class="p-0 m-0">BULAN: </p>');
+        win.document.write('<p class="p-0 m-0">BULAN: <?= date('F Y') ?></p>');
         win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
         win.document.write('<div class="container"><div class="row ttd"><div class="col-md-4 box-ttd"><p>Mengetahui:</p><p>Kepala Sekolah,</p><p class="nama">Dra. Hj. Nunung Erni Nuraeni, M.M.Pd</p><p>Pembina Utama Muda IV/c</p><p>NIP. 19670723 199412 2 002</p></div><div class="col-md-4 box-ttd"><p>Ciamis, <?= date('j F Y') ?></p><p>Pelapor,</p><p class="nama">{{auth()->user()->nama_pegawai}}</p><p class="">{{auth()->user()->nip ?? ''}}</p></div></div></div>');
-        win.document.write('</body></html>');
+        win.document.write('</div></body></html>');
 
         win.document.close(); 	// CLOSE THE CURRENT WINDOW.
 

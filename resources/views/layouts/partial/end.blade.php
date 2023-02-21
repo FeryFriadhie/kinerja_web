@@ -41,7 +41,7 @@
       $(function(){
         'use strict'
 
-        $('#example1').DataTable({
+        $('.datatable').DataTable({
           language: {
             searchPlaceholder: 'Search...',
             sSearch: '',
@@ -81,34 +81,34 @@
     <!-- select2 -->
     <script>
       // Adding placeholder for search input
-      (function($) {
+      // (function($) {
 
-        'use strict'
+      //   'use strict'
 
-        var Defaults = $.fn.select2.amd.require('select2/defaults');
+      //   var Defaults = $.fn.select2.amd.require('select2/defaults');
 
-        $.extend(Defaults.defaults, {
-          searchInputPlaceholder: ''
-        });
+      //   $.extend(Defaults.defaults, {
+      //     searchInputPlaceholder: ''
+      //   });
 
-          var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
+      //     var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
 
-          var _renderSearchDropdown = SearchDropdown.prototype.render;
+      //     var _renderSearchDropdown = SearchDropdown.prototype.render;
 
-          SearchDropdown.prototype.render = function(decorated) {
+      //     SearchDropdown.prototype.render = function(decorated) {
 
-          // invoke parent method
-          var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
+      //     // invoke parent method
+      //     var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
 
-          this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
+      //     this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
 
-          return $rendered;
-        };
+      //     return $rendered;
+      //   };
 
-      })(window.jQuery);
+      // })(window.jQuery);
 
       // Do this before you initialize any of your modals
-      $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+      // $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 
       $(function(){
         'use strict'
@@ -118,27 +118,15 @@
           searchInputPlaceholder: 'Cari Opsi',
           tags: true,
         });
-      });
-
-      $(function() {
-          'use strict'
-          $('.aktifitas_group').select2({
-          width: '100%',
-          dropdownParent: $('#edit_laporan'),
-          placeholder: 'Pilih Satu',
-          searchInputPlaceholder: 'Cari Opsi',
-          tags: true,
+        $('.select2-guru').select2({
+            placeholder: 'Pilih Guru',
+            searchInputPlaceholder: 'Cari Opsi',
+            tags: true,
         });
-      });
-
-      $(function(){
-        'use strict'
-        $('.aktifitas_usul').select2({
-          width: '100%',
-          dropdownParent: $("#edit_laporan"),
-          placeholder: 'Pilih Satu',
-          searchInputPlaceholder: 'Cari Opsi',
-          tags: true,
+        $('.select2-status').select2({
+            placeholder: 'Pilih Status',
+            searchInputPlaceholder: 'Cari Opsi',
+            tags: true,
         });
       });
 
@@ -187,14 +175,3 @@
         }
       }
     </script>
-
-
-    <!-- modal -->
-    {{-- <script>
-      var cleave = new Cleave('#inputBlocks', {
-        blocks: [8, 6, 1, 3],
-        uppercase: true
-      });
-    </script> --}}
-
-

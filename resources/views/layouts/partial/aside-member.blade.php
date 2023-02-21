@@ -35,7 +35,6 @@
               Guru
             </p>
           @endif
-         
         </div>
         <div class="collapse" id="loggedinMenu">
           <ul class="nav nav-aside mg-b-0">
@@ -48,9 +47,12 @@
       </div><!-- aside-loggedin -->
       <ul class="nav nav-aside">
         {{-- <li class="nav-label">Dashboard</li> --}}
-        <li class="nav-item"><a href="/member/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a></li>
-        <li class="nav-item"><a href="/member/kinerja" class="nav-link"><i data-feather="bar-chart"></i> <span>Kinerja</span></a></li>
-        <li class="nav-item"><a href="/member/laporan" class="nav-link"><i data-feather="file"></i> <span>Laporan</span></a></li>
+        <li class="nav-item" {{ (request()->is('member/dashboard')) ? 'active' : '' }}>
+          <a href="/member/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a></li>
+        <li class="nav-item" {{ (request()->is('member/kinerja')) ? 'active' : '' }}>
+          <a href="/member/kinerja" class="nav-link"><i data-feather="bar-chart"></i> <span>Kinerja</span></a></li>
+        <li class="nav-item" {{ (request()->is('member/laporan')) ? 'active' : '' }}>
+          <a href="/member/laporan" class="nav-link"><i data-feather="file"></i> <span>Laporan</span></a></li>
         
       </ul>
     </div>

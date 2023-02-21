@@ -35,17 +35,23 @@
         <div class="collapse" id="loggedinMenu">
           <ul class="nav nav-aside mg-b-0">
             <li class="nav-item"><a href="" class="nav-link"><i data-feather="edit"></i> <span>Edit Profile</span></a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i data-feather="user"></i> <span>View Profile</span></a></li>
+            {{-- <li class="nav-item"><a href="" class="nav-link"><i data-feather="user"></i> <span>View Profile</span></a></li>
             <li class="nav-item"><a href="" class="nav-link"><i data-feather="settings"></i> <span>Account Settings</span></a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i data-feather="log-out"></i> <span>Sign Out</span></a></li>
+            <li class="nav-item"><a href="" class="nav-link"><i data-feather="log-out"></i> <span>Sign Out</span></a></li> --}}
           </ul>
         </div>
       </div><!-- aside-loggedin -->
       <ul class="nav nav-aside">
         {{-- <li class="nav-label">Dashboard</li> --}}
-        <li class="nav-item"><a href="/verifikator/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a></li>
-        <li class="nav-item"><a href="/verifikator/verifikasi-laporan" class="nav-link"><i data-feather="file"></i> <span>Verifikasi Laporan</span></a></li>
-        <li class="nav-item"><a href="/verifikator/laporan" class="nav-link"><i data-feather="printer"></i> <span>Laporan</span></a></li>
+        <li class="nav-item {{ (request()->is('verifikator/dashboard')) ? 'active' : '' }}">
+          <a href="/verifikator/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item {{ (request()->is('verifikator/verifikasi-laporan')) ? 'active' : '' }}">
+          <a href="/verifikator/verifikasi-laporan" class="nav-link"><i data-feather="file"></i> <span>Verifikasi Laporan</span></a>
+        </li>
+        <li class="nav-item {{ (request()->is('verifikator/laporan')) ? 'active' : '' }}">
+          <a href="/verifikator/laporan" class="nav-link"><i data-feather="printer"></i> <span>Laporan</span></a>
+        </li>
       </ul>
     </div>
   </aside>

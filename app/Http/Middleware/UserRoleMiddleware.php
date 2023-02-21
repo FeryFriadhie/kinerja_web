@@ -23,7 +23,8 @@ class UserRoleMiddleware
             return $next($request);
         }
 
-        return response()->json(['Tidak ada hak akses!']);
+        // return response()->json(['Tidak ada hak akses!']);
+        return abort(404);
         
     }
 }

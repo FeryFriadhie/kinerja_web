@@ -35,39 +35,51 @@
         <div class="collapse" id="loggedinMenu">
           <ul class="nav nav-aside mg-b-0">
             <li class="nav-item"><a href="" class="nav-link"><i data-feather="edit"></i> <span>Edit Profile</span></a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i data-feather="user"></i> <span>View Profile</span></a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i data-feather="settings"></i> <span>Account Settings</span></a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i data-feather="log-out"></i> <span>Sign Out</span></a></li>
+            {{-- <li class="nav-item"><a href="" class="nav-link"><i data-feather="user"></i> <span>View Profile</span></a></li> --}}
+            {{-- <li class="nav-item"><a href="" class="nav-link"><i data-feather="settings"></i> <span>Account Settings</span></a></li> --}}
+            {{-- <li class="nav-item"><a href="" class="nav-link"><i data-feather="log-out"></i> <span>Sign Out</span></a></li> --}}
           </ul>
         </div>
       </div><!-- aside-loggedin -->
       <ul class="nav nav-aside">
-        <li class="nav-item"><a href="/admin/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a></li>
+        <li class="nav-item {{ (request()->is('admin/dashboard')) ? 'active' : '' }}">
+          <a href="/admin/dashboard" class="nav-link"><i data-feather="home"></i> <span>Dashboard</span></a>
+        </li>
         <li class="nav-item with-sub">
           <a href="" class="nav-link"><i data-feather="database"></i> <span>Master Data</span></a>
           <ul>
-            <li><a href="/admin/data-pegawai">Data Pegawai</a></li>
-            <li><a href="/admin/aktifitas-group">Aktifitas Grup</a></li>
-            <li><a href="/admin/aktifitas-usul">Aktifitas Usulan</a></li>
+            <li {{ (request()->is('admin/data-pegawai')) ? 'active' : '' }}>
+              <a href="/admin/data-pegawai">Data Pegawai</a></li>
+            <li {{ (request()->is('admin/aktifitas-gruop')) ? 'active' : '' }}>
+              <a href="/admin/aktifitas-group">Aktifitas Grup</a></li>
+            <li {{ (request()->is('admin/aktifitas-usul')) ? 'active' : '' }}>
+              <a href="/admin/aktifitas-usul">Aktifitas Usulan</a></li>
           </ul>
         </li>
         {{-- <li class="nav-item"><a href="/admin/aktifitas" class="nav-link"><i data-feather="activity"></i> <span>Aktifitas</span></a></li> --}}
         <li class="nav-item with-sub">
           <a href="" class="nav-link"><i data-feather="database"></i> <span>Referensi Data</span></a>
           <ul>
-            <li><a href="/admin/data-aspek">Aspek</a></li>
-            <li><a href="/admin/data-stakeholder">Stakeholder</a></li>
-            <li><a href="/admin/data-status-verifikasi">Status Verifikasi</a></li>
-            <li><a href="/admin/data-verifikator">Verifikator</a></li>
+            <li {{ (request()->is('admin/data-aspek')) ? 'active' : '' }}>
+              <a href="/admin/data-aspek">Aspek</a></li>
+            <li {{ (request()->is('admin/data-stakeholder')) ? 'active' : '' }}>
+              <a href="/admin/data-stakeholder">Stakeholder</a></li>
+            <li {{ (request()->is('admin/data-status-verifikasi')) ? 'active' : '' }}>
+              <a href="/admin/data-status-verifikasi">Status Verifikasi</a></li>
+            <li {{ (request()->is('admin/data-verifikator')) ? 'active' : '' }}>
+              <a href="/admin/data-verifikator">Verifikator</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a href="/admin/laporan" class="nav-link"><i data-feather="bar-chart"></i> <span>Laporan</span></a></li>
+        <li class="nav-item" {{ (request()->is('admin/laporan')) ? 'active' : '' }}>
+          <a href="/admin/laporan" class="nav-link"><i data-feather="bar-chart"></i> <span>Laporan</span></a></li>
         <li class="nav-item with-sub">
           <a href="" class="nav-link"><i data-feather="settings"></i> <span>Pengaturan</span></a>
           <ul>
-            <li><a href="/admin/pengguna-sistem">Pengguna Sistem</a></li>
+            <li {{ (request()->is('admin/pengguna-sistem')) ? 'active' : '' }}>
+              <a href="/admin/pengguna-sistem">Pengguna Sistem</a></li>
             {{-- <li><a href="/admin/peran-pengguna">Peran Pengguna</a></li> --}}
-            <li><a href="/admin/kelola-hak-akses">Kelola Hak Akses</a></li>
+            <li {{ (request()->is('admin/kelola-hak-akses')) ? 'active' : '' }}>
+              <a href="/admin/kelola-hak-akses">Kelola Hak Akses</a></li>
           </ul>
         </li>
       </ul>

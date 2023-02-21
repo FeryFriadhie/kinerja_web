@@ -15,18 +15,13 @@ use Illuminate\Http\Request;
 use App\Models\AktifitasGroup;
 use App\Models\PegVerifikator;
 use App\Models\AktifitasUsulan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
-use PhpOffice\PhpSpreadsheet\Calculation\Token\Stack;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
 class KinerjaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $id = Auth::user()->id_pegawai;
         //call relationship
@@ -41,26 +36,36 @@ class KinerjaController extends Controller
         $verifikator = Verifikator::all();
         $pegVerifikator = PegVerifikator::where('id_peg_verifikator', $id);
 
-        $kinerja = HeadReport::with('aspek', 'detReport','stakeholder','group', 'usulan','verifikasi','verifikator')
-        ->where('pegawai_id', '=', $id)
-        ->orderBy('created_at', 'desc')
-        ->paginate(5);
-        
+        $kinerja = HeadReport::join('tabel_det_report', 'tabel_det_report.report_id', '=', 'tabel_head_report.id')
+        ->where('tabel_det_report.verifikasi_id', [1,3])
+        ->orderBy('tabel_head_report.created_at', 'desc')
+        ->paginate(3);
+
+        if ($request->input('status')) {
+            $kinerja = HeadReport::join('tabel_det_report', 'tabel_det_report.report_id', '=', 'tabel_head_report.id')
+            ->whereIn('tabel_det_report.verifikasi_id', [1,2,3,4,5])
+            ->where('tabel_det_report.verifikasi_id', $request->input('status'))
+            ->orderBy('tabel_head_report.created_at', 'desc')
+            ->paginate(3);
+        }
         return view('member.kinerja.index', compact('aspek','detReport','kinerja','stakeholder','group','usulan','verifikasi','verifikator'));
     }
 
-    //function for view dokumen in new tab
-    public function viewDoc($file){
+    public function viewDoc($file){ //function for view dokumen in new tab
         $file = str_replace('&','.',$file);
-        // dd($file);
         $ext = File::extension($file);
-        // dd($ext);
         if ($ext == 'pdf') {
             $content_types='application/pdf';
         }elseif ($ext == 'doc') {
             $content_types='application/msword';
         }elseif ($ext == 'docx') {
             $content_types='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        }elseif ($ext=='xls') {
+            $content_types='application/vnd.ms-excel';  
+        }elseif ($ext=='xlsx') {
+            $content_types='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';  
+        }elseif ($ext=='txt') {
+            $content_types='application/octet-stream';  
         }
         return response()->file(public_path('/bukti/dokumen/' .'/'. $file), [
             'Content-Type' => $content_types
@@ -82,10 +87,12 @@ class KinerjaController extends Controller
         $kinerja = HeadReport::with('aspek', 'detReport','stakeholder','group', 'usulan','verifikasi')
         ->where('pegawai_id', '=', $id)
         ->paginate(); 
+
+        $verifikasi = Verifikasi::whereIn('id', [1,2,3,4])->get(); //list filter status
+
         return view('member.kinerja.tambah', compact('aspek','detReport','kinerja','stakeholder','group','usulan','verifikasi'));
     } 
 
-    
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -94,8 +101,8 @@ class KinerjaController extends Controller
             'group_id' =>'required',
             'usul_id' => 'required',
             'jumlah' => 'required',
-            // 'bukti_foto' => 'required',
-            // 'bukti_foto.*' => 'image',
+            'bukti_foto' => 'required',
+            'bukti_foto.*' => 'image',
             'bukti_dokumen' => 'required',
             'bukti_dokumen.*' => 'required|mimes:doc,docx,xlsx,xls,pdf',
         ]);
@@ -140,7 +147,7 @@ class KinerjaController extends Controller
                 $files[] = $name;
             }
         }
-        $dReport->bukti_foto = $files;
+        $dReport->bukti_foto = json_encode($files);
 
         // upload file/dokumen
         $doc = [];
@@ -160,67 +167,67 @@ class KinerjaController extends Controller
             $dReport->save();
             return redirect('/member/kinerja')->with('success', 'Laporan Aktifitas Disimpan.');
         }else{
-            return redirect('/member/kinerja/buat-laporan')->with('error', 'Laporan Aktifitas gagal disimpan.');
+            return redirect('/member/kinerja/buat-laporan')->with('danger', 'Laporan Aktifitas gagal disimpan.');
         }
     }
-
 
     public function update(Request $request, $id)
     {
         //UPDATE Laporan
-        $det = DetReport::find($id);
-        $input = $request->all();
-        $det->fill($input)->save();
-        //alditooww eta nu hapus, dina det report na teu kahapus
-        //delete data foreign key id, kitu kan? ohh enya, brrti kla
-        // report_id teh fk kannya? heem
-        //mun id head report dihapus, report_id dina det report kudu kah9apus
-        // eta kmu bisa akses database teu yeuh
-        // mih puguh
-        // basa eta ge nyobiant bisa wae siah, pling bsk di tnya ka si anto kmh, hilap deui:(
-            // basa kmri orin ngim g tdk bisa
-            // bbti anu hpus g acan ny?
-        // )
         // $det = DetReport::findOrFail($id);
-        // $det->stakeholder_id = $request->input('stakeholder_id');
-            // $det->aspek_id = $request->input('aspek_id');
-            // $det->group_id = $request->input('group_id');
-            // $det->usul_id = $request->input('usul_id');
-            // $det->jumlah = $request->input('jumlah') * 45;
-            // $det->hari = Carbon::now()->locale('id')->isoFormat('dddd');
-            // $det->tanggal = Carbon::now()->locale('id')->isoFormat('D MMMM Y');
-            // $det->ket_foto = $request->input('ket_foto');
-            // $det->ket_dokumen = $request->input('ket_dokumen');
-            // $det->ket_aktifitas = $request->input('ket_aktifitas');
+        $det = DetReport::findOrFail($id);
+        $det->stakeholder_id = $request->input('stakeholder_id');
+        $det->aspek_id = $request->input('aspek_id');
+        $det->group_id = $request->input('group_id');
+        $det->usul_id = $request->input('usul_id');
+        $det->jumlah = $request->input('jumlah') * 45;
+        $det->ket_foto = $request->input('ket_foto');
+        $det->ket_dokumen = $request->input('ket_dokumen');
+        $det->ket_aktifitas = $request->input('ket_aktifitas');
 
-            // $updatefiles = [];
-            // if($request->hasfile('bukti_foto'))
-            // {   
-            //     foreach($request->file('bukti_foto') as $file)
-            //     {            //         $name = rand(1,50).'.'.$file->extension();
-            //         $destinationPath = public_path('/bukti/images');
-            //         $img = Image::make($file->path());
-            //         $img->resize(300, 400, function ($constraint) {
-            //             $constraint->aspectRatio();
-            //         })->save($destinationPath.'/'.$name);
-            //         $updatefiles[] = $name; 
-            //     }
-            // }
-        // $det->bukti_foto = $updatefiles; 
+        //update images multiple and delete exist image
+        $files = [];
+        if($request->hasfile('foto')) 
+        {
+            #Using file
+            // $path = public_path('/bukti/images');
+            // $det->bukti_foto = basename($path);
+            // if( File::exists(public_path('/bukti/dokumen/' .'/'. $path)) ) {
+            //     File::delete(public_path('/bukti/dokumen/' .'/'. $path));
+            // }   
+            // basename($path);
+            foreach($request->file('foto') as $file)
+            {
+                $name = time().rand(1,50).'.'.$file->extension();
+                $path = public_path('/bukti/images');
+                $img = Image::make($file->path());
+                $img->resize(300, 400, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($path.'/'.$name);
+                $files[] = $name;
+            }
+        }
+        $det->bukti_foto = $files;
 
-        $awal = $det->bukti_foto;
+        // update dokumen
+        $doc = [];
+        if($request->hasfile('bukti_dokumen'))
+            {
+            foreach($request->file('bukti_dokumen') as $file)
+            {
+                $name = time().rand(1,50).'.'.$file->extension();
+                $destinationPath = public_path('/bukti/dokumen');
+                $file->move($destinationPath, $name);
+                $doc[] = $name;
+            }
+        }
+        $det->bukti_dokumen = $doc;
 
-        $foto = [
-            'bukti_foto' =>  'array',
-        ];
-        $request->bukti_foto->move(public_path().'/bukti/images/', $awal);
-        
         if($det){
-            // $det->update();
-            $det->update();
-            return redirect('/member/kinerja')->with('success','Laporan Aktifitas Berhasil Diubah!');
+            $det->save();
+            return redirect('/member/kinerja')->with('success', 'Laporan Aktifitas Berhasil Diubah!');
         }else{
-            return redirect('/member/kinerja')->with('error','Laporan Aktifitas Gagal Diubah!');
+            return redirect('/member/kinerja')->with('danger', 'Laporan Aktifitas gagal diubah!');
         }
     }
 
@@ -229,30 +236,14 @@ class KinerjaController extends Controller
     {
         //DELETE LAPORAN
         $head = HeadReport::find($id);
-        $det = DetReport::find($id->report_id);
-        // $det = DetReport::find($id);
-        // $head->headReport()->detach();
+        DetReport::where('report_id', $id)->delete(); //get report_it
         if ($head) {
             $head->delete();
-            $det->delete();
             return redirect('/member/kinerja')->with('success','Laporan Aktifitas Berhasil Dihapus!');
         } else {
             return redirect('/member/kinerja')->with('danger','Laporan Aktifitas Gagal Dihapus!');
         }
-        
-        // $det->delete();
-        
-// aldita, iyah apa yang? bade ngerjaken nu mana? abi can uih da :) inii abi ngrjkaeun delete/ saurna fery mah kan update? hayu ku abi dibantuan oke tapi abi can uih 
-// uih na kapan?:(  fer pake hp? brrti blm instal di pc?
-        // $head = HeadReport::find($id);
-        // // $det = DetReport::find($id);
-        // $head->heqdReport()->detach();
-        // $head->delete();
-        // // $det->delete();
-        // return redirect('/member/kinerja')->with('success','Laporan Aktifitas Berhasil Dihapus!');
-        
     }
-
 
     // function select option
     public function getGroup(Request $request)
@@ -266,6 +257,4 @@ class KinerjaController extends Controller
         $data['usul'] = AktifitasUsulan::where("group_id",$request->usul_id)->get(["aktifitas_usulan", "id"]);
         return response()->json($data['usul']);
     }
-
-    
 }

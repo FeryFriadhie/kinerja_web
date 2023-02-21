@@ -15,6 +15,7 @@ use App\Http\Controllers\LaporanKinerjaController;
 use App\Http\Controllers\AktifitasUsulanController;
 use App\Http\Controllers\ValidasiLaporanController;
 use App\Http\Controllers\VerifikasiLaporanController;
+use App\Http\Controllers\LaporanVerifikatorController;
 
 
 Auth::routes();
@@ -26,28 +27,29 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth:pegawai,admin','user-role:Member'])->group(function()
 {
     Route::get('/member/dashboard', [HomeController::class, 'userMember'])->name('member.dashboard');
-
     Route::get('/member/kinerja', [KinerjaController::class, 'index'])->name('member.kinerja.index');
     Route::get('/member/kinerja/buat-laporan', [KinerjaController::class, 'create'])->name('member.kinerja.create');
     Route::post('/member/kinerja/tambah', [KinerjaController::class, 'store'])->name('member.kinerja.store');
     Route::patch('/member/kinerja/ubah/{id}', [KinerjaController::class, 'update'])->name('member.kinerja.update');
-    Route::delete('/admin/kinerja/hapus/{id}', [KinerjaController::class, 'destroy'])->name('member.kinerja.destroy');
-
-    Route::get('/view-docs/{file}', [KinerjaController::class, 'viewDoc'])->name('view.doc');
-
-    Route::post('get-group', [KinerjaController::class, 'getGroup']);
-    Route::post('get-usul', [KinerjaController::class, 'getUsul']);
+    Route::delete('/member/kinerja/hapus/{id}', [KinerjaController::class, 'destroy'])->name('member.kinerja.destroy');
+    Route::get('/view-docs/{file}', [KinerjaController::class, 'viewDoc'])->name('view.doc'); //show document in new tab blank
+    Route::post('get-group', [KinerjaController::class, 'getGroup']); //for select in add laporan aktifitas
+    Route::post('get-usul', [KinerjaController::class, 'getUsul']); //for select in add laporan aktifitas
+    //route cetak laporan
     Route::get('/member/laporan', [LaporanKinerjaController::class, 'index'])->name('member.laporan.index');
+    Route::post('/member/laporan/ajax', [LaporanKinerjaController::class, 'lap_kinerja_ajax'])->name('laporan.kinerja.ajax');
 });
 
 // ROUTE VERIFIKATOR
 Route::middleware(['auth:pegawai,admin','user-role:Verifikator'])->group(function()
 {
+    //route verifikasi laporan aktifitas
     Route::get("/verifikator/dashboard", [HomeController::class, 'userVerifikator'])->name('verifikator.dashboard');
     Route::get('/verifikator/verifikasi-laporan', [VerifikasiLaporanController::class, 'index'])->name('verifikator.verifikasi-laporan.index');
     Route::post('/verifikator/verifikasi-laporan/store', [VerifikasiLaporanController::class, 'store'])->name('verifikator.verifikasi-laporan.store');
     Route::patch('/verifikator/verifikasi-laporan/update/{id}', [VerifikasiLaporanController::class, 'update'])->name('verifikator.verifikasi-laporan.update');
-
+    //route cetak laporan
+    Route::get('/verifikator/laporan', [LaporanVerifikatorController::class, 'index'])->name('verifikator.laporan.index');
 });
 
 // ROUTE VALIDATOR
@@ -56,8 +58,11 @@ Route::middleware(['auth:pegawai,admin','user-role:Validator'])->group(function(
     Route::get("/validator/dashboard", [HomeController::class, 'userValidator'])->name('validator.dashboard');
     Route::get('/validator/validasi-laporan', [ValidasiLaporanController::class, 'index'])->name('validator.validasi-laporan.index');
     Route::patch('/validator/validasi-laporan/update/{id}', [ValidasiLaporanController::class, 'update'])->name('validator.validasi-laporan.update');
+    Route::patch('/validator/validasi-laporan/update-all', [ValidasiLaporanController::class, 'updateall'])->name('validator.validasi-laporan.updateall');
+    Route::patch('/validator/laporan', [ValidasiLaporanController::class, 'index'])->name('validator.laporan.index');
     // Route::get('/validator/laporan', function () { return view('validator.laporan'); });
     // Route::get('/validator/kinerja', function () { return view('validator.kinerja'); });
+    Route::post('get-guru', [ValidasiLaporanController::class, 'getGuru']); //for select in add laporan aktifitas
 
 });
 

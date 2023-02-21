@@ -18,57 +18,55 @@
         </div>
     </div>
 
+    <form action="/member/laporan" method="get" autocomplete="off">
+        <div class="row row-xs mb-3 hiden">
+            <div class="col-sm-3 mb-3">
+                <input type="text" id="dateFrom" name="dari_tanggal" class="form-control hiden" placeholder="Dari tanggal" required data-bs-toggle="tooltip" data-placement="top" title="Dari Tanggal">
+            </div>
+            <div class="col-sm-3 mb-3">
+                <input type="text" id="dateTo" name="sampai_tanggal" class="form-control hiden" placeholder="Sampai tanggal" required data-bs-toggle="tooltip" data-placement="top" title="Sampai Tanggal">
+            </div>
+            <div class="col-sm mb-2">
+                <button id="btn_filter" class="btn btn-primary mb-2 hiden" type="submit"><i data-feather="filter" data-bs-toggle="tooltip" data-placement="top" title="Filter Laporan"></i> Filter</button>
 
-    <div class="row mb-3 hiden">
-        <div class="col-sm-3 mb-3">
-            <input type="text" id="dateFrom" class="form-control hiden" placeholder="Dari tanggal">
+                <button class="btn btn-success mb-2 hiden" id="btPrint" onclick="createPDF()" type="submit" data-bs-toggle="tooltip" data-placement="top" title="Cetak Laporan Aktifitas"><i data-feather="printer"></i> Cetak</button> 
+
+                <a href="/member/laporan" id="btn_filter" class="btn btn-light mb-2 hiden" type="submit" data-bs-toggle="tooltip" data-placement="top" title="Refresh Halaman"><i data-feather="refresh-cw"></i> </a>
+            </div>
         </div>
-        <div class="col-sm-3 mb-3">
-            <input type="text" id="dateTo" class="form-control hiden" placeholder="Sampai tanggal">
-        </div>
-        <div class="col-sm mb-2">
-            <button class="btn btn-primary mb-2 hiden" type="submit"><i data-feather="filter"></i> Filter</button>
-            <button class="btn btn-success mb-2 hiden" id="btPrint" onclick="createPDF()" type="submit"><i data-feather="printer"></i> Cetak</button> 
-        </div>
-    </div>
+    </form>
         
     <div id="box">
-        <table id="example1" class="table">
+        <table id="lap_kinerja" class="table datatable">
             <thead>
             <tr>
-                <th width="">No</th>
-                <th width="">Hari</th>
-                <th width="">Tanggal</th>
-                <th width="">Jumlah Menit</th>
-                <th width="">Uraian Pekerjaan</th>
-                <th width="">Foto</th>
-                <th width="">Paraf</th>
+                <th width="5">No</th>
+                <th width="8">Hari</th>
+                <th width="15">Tanggal</th>
+                <th width="8">Jumlah Menit</th>
+                <th width="25">Uraian Pekerjaan</th>
+                <th width="2">Paraf</th>
             </tr>
             </thead>
+            {{-- @if (!$laporan->isEmpty()) --}}
             <tbody>
                 @foreach($laporan as $no => $item)  
                 <tr>
                     <td>{{$no+1}}</td>
-                    <td>{{$item->hari}}</td>
-                    <td>{{$item->tanggal}}</td>
-                    <td>{{$item->jumlah}}</td>
-                    <td class="uraian">{{$item->aspek->aspek}}, 
-                        {{$item->group->group_aktifitas}}, 
-                        {{$item->usulan->aktifitas_usulan}}
+                    <td>{{ $item->hari}}</td>
+                    <td>{{ $item->tanggal}}</td>
+                    <td>{{ $item->jumlah}}</td>
+                    <td class="uraian">{{ $item->aspek->aspek}},
+                        {{ $item->group->group_aktifitas}}, 
+                        {{ $item->usulan->aktifitas_usulan}}
                     </td>
-                    <td class="d-flex">
-                        @if($item->bukti_foto == null)
-                            <img src="{{ url('') }}/assets/img/photos.png" width="50%" alt=""></p> 
-                        @elseif($item->bukti_foto)
-                            @foreach ($item->bukti_foto as $show)
-                                <img src="{{asset('bukti/images/' . $show)}}" width="50%" alt=""></p>
-                            @endforeach
-                        @endif
-                    </td>
-                    <td>-</td>
+                    <td></td>
                 </tr>
                 @endforeach
             </tbody>
+            {{-- @else
+                <h6 class="mt-3 text-secondary">Tidak ada laporan.</h6>
+            @endif --}}
         </table>
     </div>
 
@@ -78,46 +76,27 @@
 
 @endsection
 
-{{-- @push('script')
+@push('js')
 <script>
-    function createPDF() {
-        var sTable = document.getElementById('box').innerHTML;
+    let lap_kinerja_table = $('#lap_kinerja').dataTable();
 
-        var style = "<style>";
-        style = style + "* {font-size: 12px; font-family: sans-serif}";
-        style = style + "table {width: 100%; margin-bottom: 3em; margin-top: 2em; font-size: 12px}";
-        style = style + "th {font-size: 12px}";
-        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse; border-color: black;";
-        style = style + "padding: 2px 3px;text-align: center;}";
-        style = style + ".dt-button {display: none}";
-        style = style + ".dataTables_length {display: none}";
-        style = style + ".dataTables_info {display: none}";
-        style = style + ".dataTables_paginate {display: none}";
-        style = style + "#tbl_filter {display: none}";
-        style = style + ".title {text-align: center; margin: 1em}";
-        style = style + ".ttd {display: flex; justify-content: space-around;}";
-        style = style + ".box-ttd {text-align: center; margin-right: 2em;}";
-        style = style + ".nama {margin-top: 5em; text-decoration: underline; font-weight: bold;}";
-        style = style + "p {margin: 0;}";
-        style = style + ".hiden {display: none;}";
-        style = style + "</style>";
+$('#btn_filter').click(function(){
+    var dari_tanggal = $('#dateFrom').val();
+    var sampai_tanggal = $('#dateTo').val();
 
-        // CREATE A WINDOW OBJECT.
-        var win = window.open('', '', 'height=700,width=700');
-
-        win.document.write('<html><head>');
-        win.document.write('<title>Laporan PEKKA <?= date('F Y') ?></title>');   // <title> FOR PDF HEADER.
-        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
-        win.document.write('</head>');
-        win.document.write('<body>');
-        win.document.write('<h5 class="title">LAPORAN PERKEMBANGAN KELOMPOK PEKKA KABUPATEN CIAMIS</h5>');
-        win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-        win.document.write('<div class="container"><div class="row ttd"><div class="col-md-4 box-ttd"><p>Mengetahui:</p><p>Kasi Pemberdayaan Perempuan</p><p class="nama">Dra.Hj. ERNI MULYANINGSIH, S.Pd</p><p>NIP. 19670224 199303 2 005 -IV/a</p></div><div class="col-md-4 box-ttd"><p>Ciamis, <?= date('j F Y') ?></p><p>Pendamping PEKKA</p><p class="nama">RATNA KOMALASARI</p></div></div></div>');
-        win.document.write('</body></html>');
-
-        win.document.close(); 	// CLOSE THE CURRENT WINDOW.
-
-        win.print();    // PRINT THE CONTENTS.
-    }
+    $.ajax({
+        url: "{{ route('laporan.kinerja.ajax') }}",
+        type: "POST",
+        data: {
+            "_token": "{{ csrf_token() }}",
+            "dateFrom": dari_tanggal,
+            "dateTo": sampai_tanggal
+        },
+        success: function(response){
+            lap_kinerja_table.fnClearTable()
+            lap_kinerja_table.fnAddData(response.data)
+        }
+    });
+});
 </script>
-@endpush --}}
+@endpush

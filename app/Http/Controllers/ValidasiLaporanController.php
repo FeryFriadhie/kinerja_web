@@ -23,7 +23,7 @@ class ValidasiLaporanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $id = auth()->user()->id_pegawai;
         //call relationship
@@ -35,14 +35,23 @@ class ValidasiLaporanController extends Controller
         $usulan = AktifitasUsulan::all();
         $verifikasi = Verifikasi::all();
         $pegawai = DataPegawai::all();
-        $pegVerifikator = PegVerifikator::all();
- 
-        //  $kinerja = DetReport::with('aspek','stakeholder','group', 'usulan','verifikasi')
-        $kinerja = DetReport::with('aspek', 'pegawai', 'hReport', 'stakeholder','group', 'usulan','verifikasi')
-        ->whereIn('verifikasi_id', array(2, 5))
-        ->paginate(10);
+        $pegVerifikator = PegVerifikator::where('verifikator_id', '=', '2')->get();
 
-        return view('validator.validasi-laporan', compact('aspek', 'pegawai', 'hReport', 'kinerja','stakeholder','group','usulan','verifikasi'));
+        $data = HeadReport::join('tabel_det_report', 'tabel_det_report.report_id', '=', 'tabel_head_report.id')
+        ->where('tabel_det_report.verifikasi_id', '2')
+        ->orderBy('tabel_head_report.created_at', 'desc')
+        ->paginate(3);
+
+        if ($request->input('verifikator') || $request->input('guru')) {
+            $data = HeadReport::join('tabel_det_report', 'tabel_det_report.report_id', '=', 'tabel_head_report.id')
+            ->where('tabel_det_report.verifikasi_id', '2')
+            ->where('tabel_head_report.peg_verifikator_id', $request->input('verifikator'))
+            ->where('tabel_head_report.pegawai_id', $request->input('guru'))
+            ->orderBy('tabel_head_report.created_at', 'desc')
+            ->paginate(3);
+        }
+
+        return view('validator.validasi-laporan', compact('aspek', 'pegawai', 'detReport', 'data','stakeholder','group','usulan','verifikasi', 'pegVerifikator'));
     }
 
     /**
@@ -97,11 +106,24 @@ class ValidasiLaporanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updateStatus = DetReport::find($id);
+        $updateStatus = DetReport::findOrFail($id);
         $input = $request->all();
         $updateStatus->fill($input)->save();
         return redirect('/validator/validasi-laporan')->with('success','Data telah berhasil diubah!');
     }
+
+    public function updateall(Request $request){
+        if($request->get('verifikasi_id') == "5"){
+            DetReport::where('id')
+                ->update([
+                    'verifikator_id' => 5
+                ]);
+            return redirect('/validator/validasi-laporan')->with('success','Semua Laporan telah divalidasi!');
+        }else {
+            return redirect('/validator/validasi-laporan')->with('danger','Gagal!'); 
+        }
+
+   }
 
     /**
      * Remove the specified resource from storage.
@@ -115,4 +137,11 @@ class ValidasiLaporanController extends Controller
         // $det->delete();
         // return redirect('/validator/validasi-laporan')->with('success','Data telah berhasil dihapus!');
     }
+
+     // function select option
+     public function getGuru(Request $request)
+     {
+         $data['guru'] = DataPegawai::where("peg_verifikator_id",$request->id_pegawai)->get(["id_pegawai", "nama_pegawai"]);
+         return response()->json($data['guru']);
+     }
 }

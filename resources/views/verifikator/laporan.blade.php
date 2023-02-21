@@ -26,7 +26,7 @@
             <input type="text" id="dateTo" class="form-control" placeholder="Sampai tanggal">
         </div>
         <div class="col-sm mb-2">
-            <button class="btn btn-primary mb-2" type="submit"><i data-feather="filter"></i> Filter</button>
+            <button id="btn_filter" class="btn btn-primary mb-2" type="submit"><i data-feather="filter"></i> Filter</button>
             <button class="btn btn-success mb-2" type="submit"><i data-feather="printer"></i> Cetak</button> 
         </div>
     </div>

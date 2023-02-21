@@ -25,7 +25,7 @@
                                 <label for="email">Username or Email</label>
                                 {{-- <input type="text" class="form-control" id="" name="email"   autocomplete="" placeholder="Username or email" /> --}}
                                 {{-- <input type="text" class="form-control" id="nik" name="nik" value="{{ old('nik') }}" placeholder="Masukan NIK" /> --}}
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Username or email">
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -35,14 +35,13 @@
                                 
                             </div>
                             <div class="form-group">
-                                <div class="d-flex justify-content-between mg-b-5">
+                                <div class="d-flex justify-content-between mg-b-1">
                                     <label class="mg-b-0-f">Kata Sandi</label>
                                     {{-- <a href="" class="tx-13">Lupa Kata Sandi?</a> --}}
                                 </div>
                             </div> 
-                            
-                            
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password" placeholder="Enter your password" />
+                        
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password" placeholder="Masukan kata sandi" />
                             
                             @error('password')
                             <span class="invalid-feedback" role="alert">

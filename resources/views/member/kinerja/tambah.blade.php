@@ -86,7 +86,7 @@
           <textarea class="form-control" id="ket_aktifitas" name="ket_aktifitas" rows="3" placeholder="Keterangan" required></textarea>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Simpan</button>
+      <button type="submit" id="alertBtn" class="btn btn-primary">Simpan</button>
       <a href="/member/kinerja" class="btn btn-secondary">Kembali</a>
     </form>
 

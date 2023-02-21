@@ -56,21 +56,6 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // if(is_numeric($input['email']))
-        // {
-        //   $input['email'] = DataPegawai::where('nik', $input['email'])->first()->email;
-        // } else {
-        //   $input['email'] = $input['email'];
-        // }
-
-        // dd($input['email']);
-
-        // mun kie bisaa login pegawai?
-        // kela diajran deui
-        // bisa, tpi login tina table user teu bisa aka admin
-
-        
-        
         if(Auth::guard('admin')->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
           // dd(auth()->user());
@@ -93,7 +78,7 @@ class LoginController extends Controller
             }
             else
             {
-                return '404';
+                return abort(404);
             }
         } 
         elseif (Auth::guard('pegawai')->attempt(array('email' => $input['email'], 'password' => $input['password']))) 
@@ -119,7 +104,7 @@ class LoginController extends Controller
             }
             else
             {
-                return '404';
+                return abort(404);
             }
         } 
         else

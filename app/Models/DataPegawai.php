@@ -36,9 +36,9 @@ class DataPegawai extends Authenticatable
         return $this->hasMany(headReport::class);
     }
 
-    // public function pegVerifikator(){
-    //     return $this->hasMany(PegVerifikator::class, 'peg_verifikator_id', 'id_peg_verifikator');
-    // }
+    public function pegVerifikator(){
+        return $this->hasMany(PegVerifikator::class, 'peg_verifikator_id', 'id_peg_verifikator');
+    }
 
     // public function verifikator(){
     //     return $this->belongsTo(DataPegawai::class);
